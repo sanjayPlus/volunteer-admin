@@ -153,7 +153,7 @@ const [excelData, setExcelData] = useState([])
       query1 += `&infavour=${infavour}`;
     }
     if (votingStatus) {
-      query1 += `&votingStatus=${votingStatus}`;
+      query1 += `&voterStatus=${votingStatus}`;
     }
     if (age) {
       query1 += `&age=${age}`;
