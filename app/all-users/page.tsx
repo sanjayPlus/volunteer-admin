@@ -21,7 +21,7 @@ function AllUser() {
   const [age, setAge] = useState("");
   const [query, setQuery] = useState("");
   const router = useRouter();
-const [excelData, setExcelData] = useState([])
+  const [infavourList, setInfavourList] = useState([]);
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -72,6 +72,11 @@ const [excelData, setExcelData] = useState([])
         });
     }
   }, [router]);
+  useEffect(() => {
+    axios.get(SERVER_URL + "/admin/infavour").then((res) => {
+      setInfavourList(res.data.infavour);
+    });
+  }, []);
   const handleSearch = () => {
     const token = localStorage.getItem("token");
     if (page > 0 && page <= totalPage) {
@@ -209,7 +214,7 @@ const [excelData, setExcelData] = useState([])
         const newData = data.map((item: any) => {
           return {
             Name: item.name,
-            VoterId: item.voterID,
+            VoterId: item.voterId,
             Gender: item.gender,
             Age: item.age,
             Caste: item.caste,
@@ -355,10 +360,11 @@ const [excelData, setExcelData] = useState([])
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
               <option value="">Select an option</option>
-              <option value="UDF">UDF</option>
-              <option value="LDF">LDF</option>
-              <option value="NDA">NDA</option>
-              <option value="NILL">NAN</option>
+              {infavourList?.map((item: any) => (
+                <option key={item._id} value={item.infavour}>
+                  {item.infavour}
+                </option>
+              ))}
             </select>
           </div>
           <div className="max-w-sm mx-auto">
@@ -454,7 +460,7 @@ const [excelData, setExcelData] = useState([])
                       {user.name}
                     </th>
                     <td className="px-6 py-4">{user.gender}</td>
-                    <td className="px-6 py-4">{user.voterID}</td>
+                    <td className="px-6 py-4">{user.voterId}</td>
                     <td className="px-6 py-4">
                     <p
                        
