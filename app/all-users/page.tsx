@@ -5,7 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import * as XLSX from 'xlsx';
+import * as XLSX from "xlsx";
 
 function AllUser() {
   const [user, setUser] = useState<{ _id: string }[]>([]);
@@ -22,7 +22,7 @@ function AllUser() {
   const [query, setQuery] = useState("");
   const router = useRouter();
   const [infavourList, setInfavourList] = useState([]);
-  const [sNo, setSNo] = useState(false);
+  const [sNo, setSNo] = useState<Boolean>(false);
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -62,7 +62,7 @@ function AllUser() {
               .catch((err) => {
                 console.log(err);
               });
-          }else{
+          } else {
             router.push("/login");
             localStorage.removeItem("token");
           }
@@ -107,11 +107,14 @@ function AllUser() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios
-      .get(SERVER_URL + "/volunteer/users?page=" + page + "&perPage=10" + query, {
-        headers: {
-          "x-access-token": token,
-        },
-      })
+      .get(
+        SERVER_URL + "/volunteer/users?page=" + page + "&perPage=10" + query,
+        {
+          headers: {
+            "x-access-token": token,
+          },
+        }
+      )
       .then((res) => {
         setUser(res.data.data);
         setTotalPage(res.data.totalPages);
@@ -192,61 +195,59 @@ function AllUser() {
     // Update the page state
     setPage(newPage);
   };
-  const handleReset =()=>{
-    setBooth("")
-    setSearch("")
-    setGender("")
-    setCaste("")
-    setInfavour("")
-    setVotingStatus("")
-    setAge("")
-    setQuery("")
-
-  }
+  const handleReset = () => {
+    setBooth("");
+    setSearch("");
+    setGender("");
+    setCaste("");
+    setInfavour("");
+    setVotingStatus("");
+    setAge("");
+    setQuery("");
+  };
 
   const handleExcelDownload = () => {
     const token = localStorage.getItem("token");
     axios
-    .get(`${SERVER_URL}/volunteer/users?${query}`, {
-      headers: {
-        "x-access-token": token,
-      },
-    })
-    .then((res) => {
-      if (res.status === 200) {
-        const data = res.data.data;
-        const newData = data.map((item: any) => {
-          return {
-            Name: item.name,
-            VoterId: item.voterId,
-            Gender: item.gender,
-            Age: item.age,
-            Caste: item.caste,
-            Infavour: item.infavour,
-            Booth: item.booth,
-            VoterStatus: item.voterStatus,
-            Email: item.email,
-            Phone: item.phone,
-            GuardianName: item.guardianName,
-            HouseNo: item.houseNo,
-            HouseName: item.houseName,
-            Address: item.address,
-            whatsAppNo: item.whatsappNo,
-            Profession: item.profession,
-
-          }
-        })
-        const ws = XLSX.utils.json_to_sheet(newData);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-        XLSX.writeFile(wb, "data.xlsx");
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+      .get(`${SERVER_URL}/volunteer/users?${query}`, {
+        headers: {
+          "x-access-token": token,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          const data = res.data.data;
+          const newData = data.map((item: any) => {
+            return {
+              Name: item.name,
+              VoterId: item.voterId,
+              Gender: item.gender,
+              Age: item.age,
+              Caste: item.caste,
+              Infavour: item.infavour,
+              Booth: item.booth,
+              VoterStatus: item.voterStatus,
+              Email: item.email,
+              Phone: item.phone,
+              GuardianName: item.guardianName,
+              HouseNo: item.houseNo,
+              HouseName: item.houseName,
+              Address: item.address,
+              whatsAppNo: item.whatsappNo,
+              Profession: item.profession,
+            };
+          });
+          const ws = XLSX.utils.json_to_sheet(newData);
+          const wb = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+          XLSX.writeFile(wb, "data.xlsx");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
-  
+
   return (
     <>
       <Sidebar>
@@ -308,7 +309,8 @@ function AllUser() {
               <option value="">Select an option</option>
               {boothList.map((booth: any) => (
                 <option key={booth} value={booth}>
-                  {booth}</option>
+                  {booth}
+                </option>
               ))}
             </select>
           </div>
@@ -395,6 +397,24 @@ function AllUser() {
           </div>
           <div className="max-w-sm mx-auto">
             <label
+              htmlFor="sNo"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Select sNo
+            </label>
+            <select
+              id="sNo"
+              value="sNo"
+              onChange={(e) => setSNo(Boolean(e.target.value))}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            >
+              <option value="">Select an option</option>
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
+          </div>
+          <div className="max-w-sm mx-auto">
+            <label
               htmlFor="age"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
@@ -475,26 +495,23 @@ function AllUser() {
                     <td className="px-6 py-4">{user.gender}</td>
                     <td className="px-6 py-4">{user.voterId}</td>
                     <td className="px-6 py-4">
-                    <p
-                       
-                       className="font-medium text-green-700 dark:text-green-400 hover:underline"
-                       onClick={() => router.push(`/single-user/${user._id}`)}
-                     >
-                    View
-                     </p>
-                    </td>
-                    <td className="px-6 py-4">
-                    <p
-                       
-                       className="font-medium text-blue-700 dark:text-blue-400 hover:underline"
-                       onClick={() => router.push(`/update-user/${user._id}`)}
-                     >
-                    Edit
-                     </p>
+                      <p
+                        className="font-medium text-green-700 dark:text-green-400 hover:underline"
+                        onClick={() => router.push(`/single-user/${user._id}`)}
+                      >
+                        View
+                      </p>
                     </td>
                     <td className="px-6 py-4">
                       <p
-                       
+                        className="font-medium text-blue-700 dark:text-blue-400 hover:underline"
+                        onClick={() => router.push(`/update-user/${user._id}`)}
+                      >
+                        Edit
+                      </p>
+                    </td>
+                    <td className="px-6 py-4">
+                      <p
                         className="font-medium text-red-500 dark:text-red-400 hover:underline"
                         onClick={() => handleDelete(user._id)}
                       >
