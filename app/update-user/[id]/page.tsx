@@ -7,7 +7,8 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 function UpdateUser() {
-    const {id} = useParams()
+    const {id} = useParams();
+  
   const [booth, setBooth] = useState("");
   const [caste, setCaste] = useState("");
   const [infavour, setInfavour] = useState("");
