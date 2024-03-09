@@ -195,7 +195,7 @@ function AllUser() {
         setInfavour("");
         setVotingStatus("");
         setAge("");
-        setSNo("");
+        setSNo(false);
         setPage(1);
         setTotalPage(1);
       });
@@ -216,6 +216,7 @@ function AllUser() {
     setVotingStatus("");
     setAge("");
     setQuery("");
+    setSNo(false);
   };
 
   const handleExcelDownload = () => {
