@@ -232,6 +232,7 @@ function AllUser() {
           const data = res.data.data;
           const newData = data.map((item: any) => {
             return {
+              SNo: item.sNo,
               Name: item.name,
               VoterId: item.voterId,
               Gender: item.gender,
