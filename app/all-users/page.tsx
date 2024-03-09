@@ -186,6 +186,18 @@ function AllUser() {
       })
       .catch((err) => {
        toast.error("No User Found");
+       //make emplty filter
+        setQuery("");
+        setBooth("");
+        setSearch("");
+        setGender("");
+        setCaste("");
+        setInfavour("");
+        setVotingStatus("");
+        setAge("");
+        setSNo("");
+        setPage(1);
+        setTotalPage(1);
       });
   };
   const handlePageChange = (value: number) => {
