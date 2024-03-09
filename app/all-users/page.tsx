@@ -185,7 +185,7 @@ function AllUser() {
         }
       })
       .catch((err) => {
-        console.log(err);
+       toast.error("No User Found");
       });
   };
   const handlePageChange = (value: number) => {
