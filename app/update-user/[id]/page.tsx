@@ -7,8 +7,8 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 function UpdateUser() {
-    const {id} = useParams();
-  
+  const { id } = useParams();
+
   const [booth, setBooth] = useState("");
   const [caste, setCaste] = useState("");
   const [infavour, setInfavour] = useState("");
@@ -24,6 +24,8 @@ function UpdateUser() {
   const [phone, setPhone] = useState("");
   const [boothList, setBoothList] = useState([]);
   const [infavourList, setInfavourList] = useState([]);
+  const [sNo, setSNo] = useState<any>("");
+  const [voterId, setVoterId] = useState<any>("");
   const router = useRouter();
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -37,22 +39,26 @@ function UpdateUser() {
         },
       })
       .then((res) => {
-        axios.get(`${SERVER_URL}/volunteer/volunteer-details`,{
+        axios
+          .get(`${SERVER_URL}/volunteer/volunteer-details`, {
             headers: {
-                "x-access-token": token,
-            }
-        }).then((res) => {
-            if(!res.data.volunteer.verified){
-                router.replace("/login");       
+              "x-access-token": token,
+            },
+          })
+          .then((res) => {
+            if (!res.data.volunteer.verified) {
+              router.replace("/login");
             }
             setBoothList(res.data.volunteer.boothRule);
-            axios.get(`${SERVER_URL}/volunteer/user/${id}`,{
+            axios
+              .get(`${SERVER_URL}/volunteer/user/${id}`, {
                 headers: {
-                    "x-access-token": token,
-                }
-            }).then((res)=>{
+                  "x-access-token": token,
+                },
+              })
+              .then((res) => {
                 console.log(res.data);
-                
+
                 setBooth(res.data.user.booth);
                 setCaste(res.data.user.caste);
                 setInfavour(res.data.user.infavour);
@@ -66,9 +72,10 @@ function UpdateUser() {
                 setHouseName(res.data.user.houseName);
                 setAddress(res.data.user.address);
                 setPhone(res.data.user.phone);
-                
-            })
-        })
+                setVoterId(res.data.user.voterId);
+                setSNo(res.data.user.sNo);
+              });
+          });
       })
       .catch((err) => {
         router.push("/login");
@@ -100,6 +107,8 @@ function UpdateUser() {
           houseNo,
           houseName,
           phone,
+          voterId,
+          sNo,
         },
         {
           headers: {
@@ -135,7 +144,35 @@ function UpdateUser() {
             className="bg-gray-50 border mb-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Enter your name"
           />
-
+          <label
+            htmlFor="sNo"
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >
+            SNo
+          </label>
+          <input
+            onChange={(e) => setSNo(e.target.value)}
+            type="number"
+            id="sNo"
+            value={sNo}
+            className="bg-gray-50 border mb-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Enter your sNo"
+          />
+             {/* Voter ID field */}
+             <label
+            htmlFor="voterId"
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >
+            Voter ID
+          </label>
+          <input
+            onChange={(e) => setVoterId(e.target.value)}
+            type="text"
+            id="voterId"
+            value={voterId}
+            className="bg-gray-50 mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Enter your voter ID"
+          />
           {/* Phone field */}
           <label
             htmlFor="phone"
@@ -151,7 +188,7 @@ function UpdateUser() {
             className="bg-gray-50 mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Enter your phone number"
           />
-     
+
           {/* Whatsapp Number field */}
           <label
             htmlFor="whatsappNo"
@@ -180,13 +217,13 @@ function UpdateUser() {
             onChange={(e) => setCaste(e.target.value)}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           >
-            <option value="" >Select an option</option>
-            <option value="RC" >RC</option>
-            <option value="OBC" >OBC</option>
-            <option value="SC" >SC</option>
-            <option value="ST" >ST</option>
-            <option value="Muslium" >Muslium</option>
-            <option value="Hindu" >Hindu</option>
+            <option value="">Select an option</option>
+            <option value="RC">RC</option>
+            <option value="OBC">OBC</option>
+            <option value="SC">SC</option>
+            <option value="ST">ST</option>
+            <option value="Muslium">Muslium</option>
+            <option value="Hindu">Hindu</option>
           </select>
           {/* Infavour field */}
           <label
@@ -201,12 +238,12 @@ function UpdateUser() {
             onChange={(e) => setInfavour(e.target.value)}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           >
-            <option value="" >Select an option</option>
+            <option value="">Select an option</option>
             {infavourList?.map((item: any) => (
-                <option key={item._id} value={item.infavour}>
-                  {item.infavour}
-                </option>
-              ))}
+              <option key={item._id} value={item.infavour}>
+                {item.infavour}
+              </option>
+            ))}
           </select>
 
           {/* Gender field */}
@@ -222,7 +259,7 @@ function UpdateUser() {
             className="bg-gray-50 mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             onChange={(e) => setGender(e.target.value)}
           >
-             <option value="" >Select an gender</option>
+            <option value="">Select an gender</option>
             <option value="M">Male</option>
             <option value="F">Female</option>
             <option value="N">NaN</option>
@@ -325,7 +362,7 @@ function UpdateUser() {
             placeholder="Enter your address"
           />
         </div>
-       
+
         <div className="max-w-sm mx-auto">
           <label
             htmlFor="booth"
@@ -353,7 +390,7 @@ function UpdateUser() {
             className="bg-primary text-white w-full py-3 rounded-lg bg-blue-500"
             onClick={handleSubmit}
           >
-        Update User
+            Update User
           </button>
         </div>
       </div>

@@ -22,7 +22,7 @@ function AllUser() {
   const [query, setQuery] = useState("");
   const router = useRouter();
   const [infavourList, setInfavourList] = useState([]);
-  const [sNo, setSNo] = useState<Boolean>(false);
+  const [sNo, setSNo] = useState<any>(false);
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -247,6 +247,13 @@ function AllUser() {
         console.log(err);
       });
   };
+  const handleSNo = () => {
+    if (booth) {
+      setSNo(!sNo);
+    } else {
+      toast.error("Please select booth first");
+    }
+  };
 
   return (
     <>
@@ -396,23 +403,24 @@ function AllUser() {
             </select>
           </div>
           <div className="max-w-sm mx-auto">
-            <label
-              htmlFor="sNo"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Select sNo
-            </label>
-            <select
-              id="sNo"
-              value="sNo"
-              onChange={(e) => setSNo(Boolean(e.target.value))}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              <option value="">Select an option</option>
-              <option value="true">Yes</option>
-              <option value="false">No</option>
-            </select>
-          </div>
+      <div className="flex items-center" onClick={()=>(!booth&&toast.error("Please select booth first"))}>
+        <input
+          id="checked-checkbox"
+          type="checkbox"
+          checked={sNo}
+          onChange={handleSNo}
+          disabled={!booth}
+          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+        />
+        <label
+          htmlFor="checked-checkbox"
+          className={`ms-2 text-sm font-medium ${!booth ? 'text-gray-500 dark:text-gray-600' : 'text-gray-900 dark:text-gray-300'}`}
+        >
+          Serial No
+        </label>
+      </div>
+    </div>
+
           <div className="max-w-sm mx-auto">
             <label
               htmlFor="age"
