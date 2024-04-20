@@ -8,7 +8,7 @@ const withPWA = require("@ducanh2912/next-pwa").default({
     workboxOptions: {
       disableDevLogs: true,
     },
-    // ... other options you like
+
   });
   
   /** @type {import('next').NextConfig} */
@@ -16,6 +16,7 @@ const withPWA = require("@ducanh2912/next-pwa").default({
     eslint: {
       ignoreDuringBuilds: true,
     },
+    
     // output: 'export',
     // trailingSlash: true,
   };

@@ -1,19 +1,22 @@
 "use client"
 import Link from 'next/link';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 
 function Sidebar({ children }: { children: React.ReactNode }) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
+const [token, setToken] = useState<any>("");
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
     const closeSidebar = () => {
         setIsSidebarOpen(false);
     };
-    const token = localStorage.getItem("token");
+    useEffect(() => {
+       setToken(localStorage.getItem("token"));
+
+    },[])
 
     return (
         <>
